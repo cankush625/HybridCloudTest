@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: "rsweb1"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: "IN"
+    matchExpressions:
+      - {key: env, operator: In, values: [dev]}
+      - {key: dc, operator: In, values: [IN]}
+
+  template:
+    metadata:
+      name: "mypod11"
+      labels:
+        env: "dev"
+        dc: "IN"
+
+    spec:
+      containers:
+      - name: "mycon1"
+        image: "cankush625/website"
