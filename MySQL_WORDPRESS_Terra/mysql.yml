@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: "rsdb1"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: "IN"
+    matchExpressions:
+      - {key: env, operator: In, values: [dev]}
+      - {key: dc, operator: In, values: [IN]}
+
+  template:
+    metadata:
+      name: "mydb11"
+      labels:
+        env: "dev"
+        dc: "IN"
+
+    spec:
+      containers:
+      - name: "mydbcon1"
+        image: "mysql:5"
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            value: ankush

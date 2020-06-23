@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: "rsdb1"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: "IN"
+    matchExpressions:
+      - {key: env, operator: In, values: [dev]}
+      - {key: dc, operator: In, values: [IN]}
+
+  template:
+    metadata:
+      name: "mydb11"
+      labels:
+        env: "dev"
+        dc: "IN"
+
+    spec:
+      containers:
+      - name: "mydbcon1"
+        image: "mysql:5"
+        volumeMounts:
+          - name: db-vol1
+            mountPath: /var/lib/mysql
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mydbsecret1
+                key: rootpass
+          - name: MYSQL_USER
+            valueFrom:
+              secretKeyRef:
+                name: mydbsecret1
+                key: username
+          - name: MYSQL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mydbsecret1
+                key: pass
+          - name: MYSQL_DATABASE
+            value: wpdb1
+      volumes:
+        - name: db-vol1
+          persistentVolumeClaim:
+            claimName: mysqlvpc1
