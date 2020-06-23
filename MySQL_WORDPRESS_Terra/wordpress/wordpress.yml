@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+
+metadata:
+  name: "rsword1"
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      dc: "IN"
+    # matchExpressions:
+    #   - {key: env, operator: In, values: [dev]}
+    #   - {key: dc, operator: In, values: [IN]}
+
+  template:
+    metadata:
+      name: "mywordpress11"
+      labels:
+        env: "dev"
+        dc: "IN"
+
+    spec:
+      containers:
+      - name: "mywordcon1"
+        image: "wordpress:4.8-php7.1-fpm-alpine"
