@@ -23,10 +23,10 @@ spec:
     spec:
       containers:
       - name: "mywordcon1"
-        image: "wordpress:4.8-php7.1-fpm-alpine"
+        image: "wordpress:4.8-apache"
         volumeMounts:
           - name: wp-vol1
-            mountPath: /etc/wordpress
+            mountPath: /var/www/html
       volumes:
         - name: wp-vol1
           persistentVolumeClaim:
